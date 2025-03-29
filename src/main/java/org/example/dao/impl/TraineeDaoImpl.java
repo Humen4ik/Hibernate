@@ -1,129 +1,63 @@
 package org.example.dao.impl;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.example.dao.TraineeDao;
 import org.example.model.Trainee;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
 public class TraineeDaoImpl implements TraineeDao {
 
-    private final SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public Optional<Trainee> findByUsername(String username) {
+        String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
+        return entityManager.createQuery(jpql, Trainee.class)
+                .setParameter("username", username)
+                .getResultStream()
+                .findFirst();
+    }
 
     @Override
-    public void save(Trainee t) {
-        Transaction tn = null;
-        Session session = null;
+    @Transactional
+    public Optional<Trainee> saveTrainee(Trainee trainee) {
         try {
-            session = sessionFactory.openSession();
-            tn = session.beginTransaction();
-            session.save(t);
-            tn.commit();
+            if (trainee.getId() == null) {
+                entityManager.persist(trainee);
+                return Optional.of(trainee);
+            } else {
+                return Optional.of(entityManager.merge(trainee)); // Використовуємо тільки для insert, але не для update
+            }
         } catch (Exception e) {
-            if (tn != null) {
-                tn.rollback();
-            }
             e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            return Optional.empty();
         }
     }
 
-    @Override
-    public void update(Trainee t) {
-
-    }
-
+    @Transactional
     @Override
     public void deleteByUsername(String username) {
-        Transaction tn = null;
-        try (Session session = sessionFactory.openSession()) {
-            tn = session.beginTransaction();
+        try {
 
-            session.createQuery("DELETE FROM Trainee t WHERE t.user.username = :username")
+            Long id = entityManager.find(Trainee.class, username).getId();
+
+            entityManager.createQuery("DELETE FROM Training t WHERE t.trainee.id = :id").setParameter("id", id).executeUpdate();
+
+            Trainee trainee = entityManager.createQuery(
+                            "SELECT t FROM Trainee t WHERE t.user.username = :username", Trainee.class)
                     .setParameter("username", username)
-                    .executeUpdate();
-
-            tn.commit();
-        } catch (Exception e) {
-            if (tn != null) {
-                tn.rollback();
-            }
-            e.printStackTrace();
+                    .getSingleResult();
+            entityManager.remove(trainee);
+        } catch (NoResultException e) {
+            System.out.println("Trainee with username " + username + " not found.");
         }
     }
 
-
-
-
-    @Override
-    public Optional<Trainee> getTraineeByUsername(String username) {
-        try (Session session = sessionFactory.openSession()) {
-            return session
-                    .createQuery("SELECT t FROM Trainee t LEFT JOIN FETCH t.trainers WHERE t.user.username = :username", Trainee.class)
-                    .setParameter("username", username)
-                    .uniqueResultOptional();
-        }
-    }
-
-    @Override
-    public void activateTrainee(String username) {
-        Transaction tn = null;
-        try (Session session = sessionFactory.openSession()) {
-            tn = session.beginTransaction();
-            session.createQuery(
-                    "UPDATE User u SET u.isActive = true WHERE u.username = :username"
-            ).setParameter("username", username)
-                    .executeUpdate();
-        } catch (Exception e) {
-            if (tn != null) {
-                tn.rollback();
-            }
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void deactivateTrainee(String username) {
-        Transaction tn = null;
-        try (Session session = sessionFactory.openSession()) {
-            tn = session.beginTransaction();
-            session.createQuery(
-                            "UPDATE User u SET u.isActive = false WHERE u.username = :username"
-                    ).setParameter("username", username)
-                    .executeUpdate();
-            tn.commit();
-        } catch (Exception e) {
-            if (tn != null) {
-                tn.rollback();
-            }
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void changePassword(String username, String password) {
-        Transaction tn = null;
-        try (Session session = sessionFactory.openSession()) {
-            tn = session.beginTransaction();
-            session.createQuery("UPDATE User u SET u.password = :password WHERE u.username = :username")
-                    .setParameter("password", password)
-                    .setParameter("username", username)
-                            .executeUpdate();
-            tn.commit();
-        } catch (Exception e) {
-            if (tn != null) {
-                tn.rollback();
-            }
-            e.printStackTrace();
-        }
-    }
 }

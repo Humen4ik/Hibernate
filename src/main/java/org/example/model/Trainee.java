@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,11 +26,16 @@ public class Trainee {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "trainee", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Training> trainings;
-
-    @ManyToMany(mappedBy = "trainees")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "trainee_trainer",
+            joinColumns = {@JoinColumn(name = "trainee_id")},
+            inverseJoinColumns = {@JoinColumn(name = "trainer_id")}
+    )
     private Set<Trainer> trainers;
+
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Training> trainings;
 
     @Override
     public String toString() {
@@ -38,7 +44,6 @@ public class Trainee {
                 ", dateOfBirth=" + dateOfBirth +
                 ", address='" + address + '\'' +
                 ", user=" + (user != null ? user.toString() : "null") +
-                ", trainings=" + trainings +
                 ", trainers=" + trainers +
                 '}';
     }

@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "users")
 @Data
-@ToString(exclude = {"trainee", "trainer"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -39,9 +37,4 @@ public class User {
     @Column(nullable = false)
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user")
-    private Trainee trainee;
-
-    @OneToOne(mappedBy = "user")
-    private Trainer trainer;
 }

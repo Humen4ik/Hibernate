@@ -5,13 +5,7 @@ import org.example.model.Trainee;
 import java.util.Optional;
 
 public interface TraineeDao {
-
-    void save(Trainee t);
-    void update(Trainee t);
+    Optional<Trainee> findByUsername(String username);
+    Optional<Trainee> saveTrainee(Trainee trainee);
     void deleteByUsername(String username);
-    Optional<Trainee> getTraineeByUsername(String username);
-    void activateTrainee(String username);
-    void deactivateTrainee(String username);
-    void changePassword(String username, String password);
-
 }

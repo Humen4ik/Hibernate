@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.List;
 
-@Service
 public final class PersonalDataService {
 
     public static String generatePassword() {
@@ -20,7 +19,7 @@ public final class PersonalDataService {
         return password.toString();
     }
 
-    public static String generateUsername(User user, List<? extends User> userList) {
+    public static String generateUsername(User user, List<User> userList) {
         String username = user.getFirstName().concat(".").concat(user.getLastName());
         long countUsersWithSameNames = userList.stream()
                 .filter(curUser -> user.getFirstName().equals(curUser.getFirstName()) && user.getLastName().equals(curUser.getLastName()))

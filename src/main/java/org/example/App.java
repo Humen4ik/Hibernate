@@ -2,31 +2,36 @@ package org.example;
 
 import org.example.conf.BaseConfig;
 import org.example.dao.TraineeDao;
+import org.example.dao.TrainerDao;
+import org.example.dto.TraineeDto;
+import org.example.facade.TraineeFacade;
+import org.example.mapper.TraineeMapper;
 import org.example.model.Trainee;
-import org.example.model.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.example.model.Trainer;
+import org.example.service.TraineeService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BaseConfig.class);
-        TraineeDao traineeDao = context.getBean(TraineeDao.class);
-        User user = new User();
-        user.setUsername("dmytro.dmytro");
-        user.setPassword("pass");
-        user.setFirstName("admin");
-        user.setLastName("admin");
-        user.setIsActive(true);
 
-        Trainee trainee = new Trainee();
-        trainee.setUser(user);
-        trainee.setAddress("Dubrovitska");
-        traineeDao.save(trainee);
+        TraineeDto dto = new TraineeDto();
+        dto.setFirstName("Oksana");
+        dto.setLastName("Oksana");
+        dto.setAddress("dubr");
+        dto.setIsActive(true);
+        List<String> trainersNames = new ArrayList<>();
+        trainersNames.add("Andrii.Melnyk");
+        trainersNames.add("Oleksii.Bondarenko");
+        dto.setTrainersUsernames(trainersNames);
 
-        traineeDao.deactivateTrainee("Dmytro.Humeniuk");
-        traineeDao.changePassword("Dmytro.Humeniuk", "abcdef");
+        TraineeFacade traineeFacade = context.getBean(TraineeFacade.class);
+        traineeFacade.deleteTraineeByUsername("Dmytro.Humeniuk");
 
-        traineeDao.deleteByUsername("Dmytro.Humeniuk");
+        context.close();
     }
 }
