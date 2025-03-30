@@ -4,7 +4,7 @@ INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('S
 INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('Test', 'Test', 'Test.Test', 'pass0', true);
 
 -- Створення типів тренувань
-INSERT INTO trainingtype (trainingtype) VALUES ('FITNESS'), ('YOGA'), ('MARTIAL ARTS'), ('RUNNING'), ('SWIMMING');
+INSERT INTO trainingtype (trainingtype) VALUES ('CARDIO'), ('STRENGTH'), ('YOGA'), ('CROSSFIT'), ('SWIMMING'), ('BOXING');
 
 -- Додавання підопічних
 INSERT INTO trainee(address, date_of_birth, user_id) VALUES ('Mars Street', '1990-05-12', 1), ('Earth Street', '1995-02-25', 2), ('Sun Street', '1992-07-19', 3), ('Moon Street', '1988-11-30', 4), ('Galaxy Street', '1993-09-15', 5);

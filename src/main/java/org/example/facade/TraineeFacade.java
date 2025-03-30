@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.TraineeDto;
 import org.example.mapper.TraineeMapper;
 import org.example.model.Trainee;
-import org.example.service.PersonalDataService;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.springframework.stereotype.Component;
@@ -26,8 +25,8 @@ public class TraineeFacade {
         return traineeMapper.toDto(traineeService.findTraineeByUsername(username));
     }
 
-    public void changePassword(String oldPassword, String newPassword) {
-        traineeService.changePassword(oldPassword, newPassword);
+    public void changePassword(String username) {
+        traineeService.changePassword(username);
     }
 
     public TraineeDto updateTraineeByUsername(TraineeDto traineeDto, String username) {

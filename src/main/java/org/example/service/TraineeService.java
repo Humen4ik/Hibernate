@@ -27,15 +27,13 @@ public class TraineeService {
                 .orElseThrow(() -> new TraineeNotFoundException("Trainee with username = " + username + " not found"));
     }
 
-    public void changePassword(String username, String password){
-        userService.changePassword(username, password);
+    public void changePassword(String username){
+        userService.changePassword(username);
     }
 
     @Transactional
     public Trainee updateTraineeByUsername(Trainee newTrainee, String username) {
         Trainee oldTrainee = findTraineeByUsername(username);
-        System.out.println("old trainee: " + oldTrainee);
-        System.out.println("new trainee: " + newTrainee);
         if (newTrainee.getUser().getFirstName() != null && !newTrainee.getUser().getFirstName().isBlank()) {
             oldTrainee.getUser().setFirstName(newTrainee.getUser().getFirstName());
         }
@@ -51,8 +49,6 @@ public class TraineeService {
         if (newTrainee.getAddress() != null && !newTrainee.getAddress().isBlank()) {
             oldTrainee.setAddress(newTrainee.getAddress());
         }
-        System.out.println("old trainee: " + oldTrainee);
-        System.out.println("new trainee: " + newTrainee);
         return findTraineeByUsername(username);
     }
 

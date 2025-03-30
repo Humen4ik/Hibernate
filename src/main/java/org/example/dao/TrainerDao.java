@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface TrainerDao {
     public Optional<Trainer> findByUsername(String username);
+    Optional<Trainer> saveTrainer(Trainer trainer);
 }

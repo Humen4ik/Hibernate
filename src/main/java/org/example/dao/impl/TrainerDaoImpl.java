@@ -24,4 +24,21 @@ public class TrainerDaoImpl implements TrainerDao {
                 .getResultStream()
                 .findFirst();
     }
+
+    @Transactional
+    @Override
+    public Optional<Trainer> saveTrainer(Trainer trainer) {
+        try {
+            if (trainer.getId() == null) {
+                System.out.println("Saving trainer " + trainer);
+                entityManager.persist(trainer);
+                return Optional.of(trainer);
+            } else {
+                return Optional.of(entityManager.merge(trainer));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
 }

@@ -5,19 +5,23 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.model.enums.TrainingType;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainingType {
+@Table(name = "trainingtype")
+public class TrainingTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String trainingType;
+    private TrainingType trainingType;
+
 
 }

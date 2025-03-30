@@ -4,8 +4,11 @@ import org.example.conf.BaseConfig;
 import org.example.dao.TraineeDao;
 import org.example.dao.TrainerDao;
 import org.example.dto.TraineeDto;
+import org.example.dto.TrainerDto;
 import org.example.facade.TraineeFacade;
+import org.example.facade.TrainerFacade;
 import org.example.mapper.TraineeMapper;
+import org.example.mapper.TrainerMapper;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.TraineeService;
@@ -19,18 +22,13 @@ public class App {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BaseConfig.class);
 
-        TraineeDto dto = new TraineeDto();
-        dto.setFirstName("Oksana");
-        dto.setLastName("Oksana");
-        dto.setAddress("dubr");
-        dto.setIsActive(true);
-        List<String> trainersNames = new ArrayList<>();
-        trainersNames.add("Andrii.Melnyk");
-        trainersNames.add("Oleksii.Bondarenko");
-        dto.setTrainersUsernames(trainersNames);
-
-        TraineeFacade traineeFacade = context.getBean(TraineeFacade.class);
-        traineeFacade.deleteTraineeByUsername("Dmytro.Humeniuk");
+        TrainerFacade trainerFacade = context.getBean(TrainerFacade.class);
+        TrainerDto trainerDto = new TrainerDto();
+        trainerDto.setFirstName("Oksana");
+        trainerDto.setLastName("San");
+        trainerDto.setIsActive(false);
+        trainerDto.setSpecialization("CARDIO");
+        trainerFacade.updateTrainer(trainerDto, "Andrii.Melnyk");
 
         context.close();
     }

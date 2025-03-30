@@ -27,8 +27,9 @@ public class Training {
     private Trainer trainer;
 
     @ManyToOne
+    @Enumerated(EnumType.STRING)
     @JoinColumn(name = "training_type_id", nullable = false)
-    private TrainingType trainingType;
+    private TrainingTypeEntity trainingType;
 
     @NotNull
     @Column(nullable = false)

@@ -17,7 +17,8 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public void changePassword(String username, String newPassword) {
+    public void changePassword(String username) {
+        String newPassword = PersonalDataService.generatePassword();
         userDao.changePassword(username, newPassword);
     }
 

@@ -45,11 +45,6 @@ public class TraineeDaoImpl implements TraineeDao {
     @Override
     public void deleteByUsername(String username) {
         try {
-
-            Long id = entityManager.find(Trainee.class, username).getId();
-
-            entityManager.createQuery("DELETE FROM Training t WHERE t.trainee.id = :id").setParameter("id", id).executeUpdate();
-
             Trainee trainee = entityManager.createQuery(
                             "SELECT t FROM Trainee t WHERE t.user.username = :username", Trainee.class)
                     .setParameter("username", username)
