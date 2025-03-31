@@ -16,14 +16,19 @@ public class TraineeDaoImpl implements TraineeDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     @Transactional
     public Optional<Trainee> findByUsername(String username) {
         String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
-        return entityManager.createQuery(jpql, Trainee.class)
-                .setParameter("username", username)
-                .getResultStream()
-                .findFirst();
+        try {
+            return Optional.of(entityManager.createQuery(jpql, Trainee.class)
+                    .setParameter("username", username)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
+
 
     @Override
     @Transactional
@@ -33,7 +38,7 @@ public class TraineeDaoImpl implements TraineeDao {
                 entityManager.persist(trainee);
                 return Optional.of(trainee);
             } else {
-                return Optional.of(entityManager.merge(trainee)); // Використовуємо тільки для insert, але не для update
+                return Optional.of(entityManager.merge(trainee));
             }
         } catch (Exception e) {
             e.printStackTrace();

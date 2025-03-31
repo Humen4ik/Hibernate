@@ -5,13 +5,19 @@ import lombok.RequiredArgsConstructor;
 import org.example.dao.TraineeDao;
 import org.example.exception.TraineeNotFoundException;
 import org.example.model.Trainee;
+import org.example.model.Trainer;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TraineeService {
 
     private final TraineeDao traineeDao;
+    private final TrainerService trainerService;
     private final UserService userService;
 
     public Trainee saveTrainee(Trainee trainee){
@@ -54,5 +60,17 @@ public class TraineeService {
 
     public void deleteTraineeByUsername(String username) {
         traineeDao.deleteByUsername(username);
+    }
+
+    @Transactional
+    public void updateTraineesTrainersByUsername(Set<String> trainersUsernames, String username) {
+        Trainee trainee = findTraineeByUsername(username);
+
+        Set<Trainer> trainers = trainersUsernames.stream()
+                .map(trainerService::findTrainerByUsername)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        trainee.setTrainers(trainers);
     }
 }

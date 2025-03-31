@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class TrainingDto {
     private String trainingName;
-    private TrainerDto trainerDto;
-    private TraineeDto traineeDto;
+    private String trainerUsername;
+    private String traineeUsername;
     private String dateTime;
     private Long durationMinutes;
     private String type;

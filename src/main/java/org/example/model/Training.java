@@ -13,7 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Training {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,5 +41,4 @@ public class Training {
     @NotNull
     @Column(nullable = false)
     private Integer duration;
-
 }

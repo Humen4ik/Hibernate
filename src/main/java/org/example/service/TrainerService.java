@@ -10,6 +10,8 @@ import org.example.model.Trainer;
 import org.example.model.TrainingTypeEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TrainerService {
@@ -58,6 +60,10 @@ public class TrainerService {
         trainer.getUser().setUsername(username);
         trainer.setSpecialization(trainingTypeEntity);
         return trainerDao.saveTrainer(trainer).orElseThrow(() -> new TraineeNotFoundException("Trainer not found"));
+    }
+
+    public List<Trainer> findAllUnassignedTrainers(String traineeUsername) {
+        return trainerDao.findNotAssignedTrainers(traineeUsername);
     }
 
 }

@@ -1,9 +1,13 @@
-package org.example.mapper
-        ;
+package org.example.mapper;
+
 import org.example.dto.TrainerDto;
 import org.example.model.Trainer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface TrainerMapper {
@@ -19,4 +23,14 @@ public interface TrainerMapper {
     @Mapping(source = "lastName", target = "user.lastName")
     @Mapping(source = "isActive", target = "user.isActive")
     Trainer toEntity(TrainerDto trainerDto);
+
+    default Set<Trainer> toEntityList(Set<TrainerDto> trainerDtos) {
+        return trainerDtos.stream().map(this::toEntity).collect(Collectors.toSet());
+    }
+
+    default List<TrainerDto> toDtoList(List<Trainer> trainers) {
+        return trainers.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
 }
