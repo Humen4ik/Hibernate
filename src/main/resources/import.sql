@@ -1,5 +1,5 @@
 -- Створення користувачів
-INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('Humeniuk', 'Dmytro', 'Dmytro.Humeniuk', 'pass123', true), ('Ivanov', 'Oleg', 'Oleg.Ivanov', 'pass456', true), ('Petrov', 'Serhii', 'Serhii.Petrov', 'pass789', true), ('Kovalenko', 'Olena', 'Olena.Kovalenko', 'pass101', true), ('Bohdan', 'Sydorenko', 'Bohdan.Sydorenko', 'pass112', true);
+INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('Humeniuk', 'Dmytro', 'Dmytro.Humeniuk', 'pass123', false), ('Ivanov', 'Oleg', 'Oleg.Ivanov', 'pass456', true), ('Petrov', 'Serhii', 'Serhii.Petrov', 'pass789', true), ('Kovalenko', 'Olena', 'Olena.Kovalenko', 'pass101', true), ('Bohdan', 'Sydorenko', 'Bohdan.Sydorenko', 'pass112', true);
 INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('Shevchenko', 'Mykola', 'Mykola.Shevchenko', 'pass202', true), ('Tkachenko', 'Iryna', 'Iryna.Tkachenko', 'pass303', true), ('Bondarenko', 'Oleksii', 'Oleksii.Bondarenko', 'pass404', true), ('Melnyk', 'Andrii', 'Andrii.Melnyk', 'pass505', true), ('Horobets', 'Nadiia', 'Nadiia.Horobets', 'pass606', true);
 INSERT INTO users (firstname, lastname, username, password, isactive) VALUES ('Test', 'Test', 'Test.Test', 'pass0', true);
 

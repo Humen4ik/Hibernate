@@ -22,6 +22,4 @@ public class TrainingTypeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TrainingType trainingType;
-
-
 }

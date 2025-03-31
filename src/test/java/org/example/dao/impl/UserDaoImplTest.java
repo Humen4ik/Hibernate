@@ -84,35 +84,17 @@ class UserDaoImplTest {
     }
 
     @Test
-    void activateUser_ShouldExecuteUpdate() {
-        String username = "testUser";
+    void changeUserActivity_ShouldReturnFalse_WhenUserWasActivated() {
+        when(entityManager.createQuery(anyString(), eq(User.class))).thenReturn(userQuery);
+        when(userQuery.setParameter(anyString(), any())).thenReturn(userQuery);
+        when(userQuery.getSingleResult()).thenReturn(user);
 
-        Query mockQuery = mock(Query.class);
-        when(entityManager.createQuery(anyString())).thenReturn(mockQuery);
-        when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery);
-        when(mockQuery.executeUpdate()).thenReturn(1);
+        boolean res = userDao.changeUserActivity("John.Doe");
 
-        userDao.activateUser(username);
-
-        verify(entityManager).createQuery(anyString());
-        verify(mockQuery).setParameter("username", username);
-        verify(mockQuery).executeUpdate();
-    }
-
-    @Test
-    void deactivateUser_ShouldExecuteUpdate() {
-        String username = "testUser";
-
-        Query mockQuery = mock(Query.class);
-        when(entityManager.createQuery(anyString())).thenReturn(mockQuery);
-        when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery);
-        when(mockQuery.executeUpdate()).thenReturn(1);
-
-        userDao.deactivateUser(username);
-
-        verify(entityManager).createQuery(anyString());
-        verify(mockQuery).setParameter("username", username);
-        verify(mockQuery).executeUpdate();
+        verify(entityManager).createQuery(anyString(), eq(User.class));
+        verify(userQuery).setParameter("username", "John.Doe");
+        verify(userQuery).getSingleResult();
+        assertEquals(false, res);
     }
 
 

@@ -32,5 +32,4 @@ public class TrainingService {
         return trainingDao.findAllTrainingsByTrainerUsernameCriteria(username, fromDate, toDate, trainerName);
     }
 
-
 }

@@ -36,5 +36,4 @@ public class User {
     @NotNull
     @Column(nullable = false)
     private Boolean isActive;
-
 }

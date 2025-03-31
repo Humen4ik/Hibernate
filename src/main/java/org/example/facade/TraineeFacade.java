@@ -7,6 +7,7 @@ import org.example.mapper.TraineeMapper;
 import org.example.model.Trainee;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
+import org.example.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -18,6 +19,7 @@ public class TraineeFacade {
     private final TraineeService traineeService;
     private final TraineeMapper traineeMapper;
     private final TrainerService trainerService;
+    private final UserService userService;
 
     public TraineeDto saveTrainee(TraineeDto traineeDto) {
         Trainee trainee = traineeMapper.toEntity(traineeDto, trainerService);
@@ -49,5 +51,10 @@ public class TraineeFacade {
     public void updateTraineeTrainersByUsername(Set<String> trainers, String username) {
         AuthenticationContext.requireAuthentication();
         traineeService.updateTraineesTrainersByUsername(trainers, username);
+    }
+
+    public boolean getTraineeActivityStatus(String username) {
+        AuthenticationContext.requireAuthentication();
+        return userService.changeUserActivity(username);
     }
 }

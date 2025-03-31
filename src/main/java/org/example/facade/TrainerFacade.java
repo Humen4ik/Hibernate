@@ -8,6 +8,7 @@ import org.example.mapper.TrainerMapper;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.TrainerService;
+import org.example.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class TrainerFacade {
 
     private final TrainerService trainerService;
     private final TrainerMapper trainerMapper;
+    private final UserService userService;
 
     public TrainerDto saveTrainer(TrainerDto trainerDto) {
         Trainer trainer = trainerMapper.toEntity(trainerDto);
@@ -45,5 +47,10 @@ public class TrainerFacade {
         AuthenticationContext.requireAuthentication();
         List<Trainer> trainers = trainerService.findAllUnassignedTrainers(traineeUsername);
         return trainerMapper.toDtoList(trainers);
+    }
+
+    public boolean getTrainerActivityStatus(String trainerUsername) {
+        AuthenticationContext.requireAuthentication();
+        return userService.changeUserActivity(trainerUsername);
     }
 }

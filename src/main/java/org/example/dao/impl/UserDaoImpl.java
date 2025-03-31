@@ -35,22 +35,14 @@ public class UserDaoImpl implements UserDao {
                 .executeUpdate();
     }
 
-    @Transactional
     @Override
-    public void activateUser(String username) {
-        String jpql = "UPDATE User u SET u.isActive = true WHERE u.username = :username";
-        entityManager.createQuery(jpql)
+    public Boolean changeUserActivity(String username) {
+        String jpql = "SELECT u FROM User u WHERE u.username = :username";
+        User user = entityManager.createQuery(jpql, User.class)
                 .setParameter("username", username)
-                .executeUpdate();
-    }
-
-    @Transactional
-    @Override
-    public void deactivateUser(String username) {
-        String jpql = "UPDATE User u SET u.isActive = false WHERE u.username = :username";
-        entityManager.createQuery(jpql)
-                .setParameter("username", username)
-                .executeUpdate();
+                .getSingleResult();
+        user.setIsActive(!user.getIsActive());
+        return user.getIsActive();
     }
 
     @Transactional

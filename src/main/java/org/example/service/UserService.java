@@ -22,4 +22,8 @@ public class UserService {
         userDao.changePassword(username, newPassword);
     }
 
+    public Boolean changeUserActivity(String username) {
+        return userDao.changeUserActivity(username);
+    }
+
 }

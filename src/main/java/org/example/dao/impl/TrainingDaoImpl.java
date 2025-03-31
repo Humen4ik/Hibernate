@@ -30,37 +30,30 @@ public class TrainingDaoImpl implements TrainingDao {
         CriteriaQuery<Training> cq = cb.createQuery(Training.class);
         Root<Training> training = cq.from(Training.class);
 
-        // З'єднання з Trainee через User
         Join<Training, Trainee> trainee = training.join("trainee");
         Join<Trainee, User> traineeUser = trainee.join("user");
 
-        // З'єднання з Trainer через User
         Join<Training, Trainer> trainer = training.join("trainer");
         Join<Trainer, User> trainerUser = trainer.join("user");
 
         List<Predicate> predicates = new ArrayList<>();
 
-        // Фільтруємо по username Trainee
         if (traineeUsername != null && !traineeUsername.isEmpty()) {
             predicates.add(cb.equal(traineeUser.get("username"), traineeUsername));
         }
 
-        // Фільтруємо по датах
         if (fromDate != null && toDate != null) {
             predicates.add(cb.between(training.get("date"), fromDate, toDate));
         }
 
-        // Фільтруємо по trainerUsername
         if (trainerUsername != null && !trainerUsername.isEmpty()) {
             predicates.add(cb.like(trainerUser.get("username"), "%" + trainerUsername + "%"));
         }
 
-        // Фільтруємо по типу тренування
         if (trainingType != null) {
             predicates.add(cb.equal(training.get("trainingType"), trainingType));
         }
 
-        // Додаємо всі умови до запиту
         cq.select(training).where(cb.and(predicates.toArray(new Predicate[0])));
 
         TypedQuery<Training> query = entityManager.createQuery(cq);
@@ -118,7 +111,6 @@ public class TrainingDaoImpl implements TrainingDao {
                 return Optional.of(entityManager.merge(training));
             }
         }  catch (Exception ex) {
-            ex.printStackTrace();
             return Optional.empty();
         }
     }

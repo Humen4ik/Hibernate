@@ -26,7 +26,8 @@ public class App {
             System.out.println("Authentication failed!");
             return;
         }
-        System.out.println(traineeFacade.findTraineeByUsername("Dmytro.Humeniuk"));
+//        System.out.println(traineeFacade.findTraineeByUsername("Dmytro.Humeniuk"));
+        System.out.println(traineeFacade.getTraineeActivityStatus("Dmytro.Humeniuk"));
 
         context.close();
     }
